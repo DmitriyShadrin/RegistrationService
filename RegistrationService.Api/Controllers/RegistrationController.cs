@@ -24,10 +24,18 @@ namespace RegistrationService.Api.Controllers
                 return BadRequest();
             }
 
-            var signingProcess = _licenseSigningManager.Start(form.LicenseKey);
+            var signingProcess = await _licenseSigningManager.StartAsync(form.LicenseKey);
             var result = await signingProcess.InvokeAsync();
 
-            return Ok();
+            if (result.Success)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Code);
+            }
+
         }
     }
 }

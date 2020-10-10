@@ -1,4 +1,5 @@
 ﻿using Grpc.Core;
+using Microsoft.Extensions.Logging;
 using RegistrationService.Domain.LicenseSigning;
 using System.Threading.Tasks;
 
@@ -7,14 +8,15 @@ namespace RegistrationService.Api.Services
     public class SigningService : SignLicense.SignLicenseBase
     {
         private readonly ILicenseSigningManager _licenseSigningManager;
+        private readonly ILogger<SigningService> _logger;
 
-        public SigningService(ILicenseSigningManager licenseSigningManager)
+        public SigningService(ILicenseSigningManager licenseSigningManager, ILogger<SigningService> logger)
         {
             _licenseSigningManager = licenseSigningManager;
-            //_logger = logger;
+            _logger = logger;
         }
 
-        public override async Task ReadLicenses(ReadLicenseRequest request, IServerStreamWriter<ReadLicenseResponse> responseStream, ServerCallContext context)
+        public override async Task ReadLicense(ReadLicenseRequest request, IServerStreamWriter<ReadLicenseResponse> responseStream, ServerCallContext context)
         {
             await foreach (var item in _licenseSigningManager.ConsumeAllAsync(context.CancellationToken))
             {

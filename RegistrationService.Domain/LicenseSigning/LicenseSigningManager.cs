@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Channels;
+using System.Threading.Tasks;
 
 namespace RegistrationService.Domain.LicenseSigning
 {
@@ -25,7 +26,7 @@ namespace RegistrationService.Domain.LicenseSigning
             return _items.Reader.ReadAllAsync(cancellationToken);
         }
 
-        public SigningProcess Start(string licenseKey)
+        public async Task<SigningProcess> StartAsync(string licenseKey)
         {
             var correlationId = Guid.NewGuid().ToString();
             var process = new SigningProcess(correlationId, licenseKey);
@@ -34,6 +35,8 @@ namespace RegistrationService.Domain.LicenseSigning
             {
                 _logger.LogWarning($"Signing process with correlation id {correlationId} could not be stored in the cache.");
             }
+
+            await _items.Writer.WriteAsync(process);
 
             return process;
         }

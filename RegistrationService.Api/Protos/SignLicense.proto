@@ -5,7 +5,7 @@ option csharp_namespace = "RegistrationService.Api.Services";
 package RegistrationService;
 
 service SignLicense {
-  rpc ReadLicenses (ReadLicenseRequest) returns (stream ReadLicenseResponse) {}
+  rpc ReadLicense (ReadLicenseRequest) returns (stream ReadLicenseResponse) {}
   rpc SendSignedLicense (SignedRequest) returns (SignedResponse) {}
 }
 

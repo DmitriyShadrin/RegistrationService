@@ -2,10 +2,10 @@
 
 option csharp_namespace = "Grpc.Client.SignGenerator";
 
-package Grpc.Client;
+package RegistrationService;
 
 service SignLicense {
-  rpc ReadLicenses (ReadLicenseRequest) returns (stream ReadLicenseResponse) {}
+  rpc ReadLicense (ReadLicenseRequest) returns (stream ReadLicenseResponse) {}
   rpc SendSignedLicense (SignedRequest) returns (SignedResponse) {}
 }
 

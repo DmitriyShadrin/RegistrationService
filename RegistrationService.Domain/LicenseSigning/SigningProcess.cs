@@ -21,9 +21,9 @@ namespace RegistrationService.Domain.LicenseSigning
             return _completionSource.Task;
         }
 
-        public void Finish(bool v, string code)
+        public void Finish(bool state, string code)
         {
-            _completionSource.TrySetResult(new SigningResult());
+            _completionSource.TrySetResult(new SigningResult(state, code));
         }
     }
 }

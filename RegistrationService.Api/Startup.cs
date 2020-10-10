@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RegistrationService.Api.Services;
 
 namespace RegistrationService.Api
 {
@@ -11,6 +12,7 @@ namespace RegistrationService.Api
         {
             services.AddControllers();
             services.AddCors();
+            services.AddGrpc();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -25,6 +27,7 @@ namespace RegistrationService.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapGrpcService<SigningService>();
             });
         }
     }

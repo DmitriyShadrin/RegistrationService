@@ -12,7 +12,8 @@ namespace Grpc.Client
         {
             using var channel = GrpcChannel.ForAddress("https://localhost:5001");
             var client = new SignLicense.SignLicenseClient(channel);
-            var call = client.ReadLicenses(new ReadLicenseRequest(), new CallOptions());
+
+            var call = client.ReadLicense(new ReadLicenseRequest(), new CallOptions());
 
             Console.WriteLine("Started.");
 
