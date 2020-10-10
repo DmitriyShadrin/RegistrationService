@@ -35,7 +35,6 @@ namespace RegistrationService.Api.Controllers
             {
                 return BadRequest(result.Code);
             }
-
         }
     }
 }

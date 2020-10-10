@@ -1,10 +1,12 @@
 ﻿using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using RegistrationService.Domain.LicenseSigning;
 using System.Threading.Tasks;
 
 namespace RegistrationService.Api.Services
 {
+    [Authorize]
     public class SigningService : SignLicense.SignLicenseBase
     {
         private readonly ILicenseSigningManager _licenseSigningManager;
