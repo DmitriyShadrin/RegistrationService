@@ -1,14 +1,19 @@
 ﻿using System.Threading.Tasks;
 
-namespace RegistrationService.Domain
+namespace RegistrationService.Domain.LicenseSigning
 {
     public class SigningProcess
     {
         private TaskCompletionSource<SigningResult> _completionSource;
 
-        public SigningProcess()
+        public string CorrelationId { get; }
+        public string LicenseKey { get; }
+
+        public SigningProcess(string correlationId, string licenseKey)
         {
             _completionSource = new TaskCompletionSource<SigningResult>();
+            CorrelationId = correlationId;
+            LicenseKey = licenseKey;
         }
 
         public Task<SigningResult> InvokeAsync()
@@ -16,7 +21,7 @@ namespace RegistrationService.Domain
             return _completionSource.Task;
         }
 
-        public void Finish()
+        public void Finish(bool v, string code)
         {
             _completionSource.TrySetResult(new SigningResult());
         }

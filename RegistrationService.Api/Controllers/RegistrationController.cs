@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RegistrationService.Api.Models;
-using RegistrationService.Domain;
-using RegistrationService.Domain.Queue;
+using RegistrationService.Domain.LicenseSigning;
 using System.Threading.Tasks;
 
 namespace RegistrationService.Api.Controllers
@@ -10,11 +9,11 @@ namespace RegistrationService.Api.Controllers
     [ApiController]
     public class RegistrationController : ControllerBase
     {
-        private readonly ISigningQueue _signingQueue;
+        private readonly ILicenseSigningManager _licenseSigningManager;
 
-        public RegistrationController(ISigningQueue signingQueue)
+        public RegistrationController(ILicenseSigningManager licenseSigningManager)
         {
-            _signingQueue = signingQueue;
+            _licenseSigningManager = licenseSigningManager;
         }
 
         [HttpPost]
@@ -25,8 +24,7 @@ namespace RegistrationService.Api.Controllers
                 return BadRequest();
             }
 
-            var signingProcess = new SigningProcess();
-            await _signingQueue.AddAsync(signingProcess);
+            var signingProcess = _licenseSigningManager.Start(form.LicenseKey);
             var result = await signingProcess.InvokeAsync();
 
             return Ok();

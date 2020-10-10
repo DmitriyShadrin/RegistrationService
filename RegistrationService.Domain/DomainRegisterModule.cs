@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using RegistrationService.Domain.Queue;
+using RegistrationService.Domain.LicenseSigning;
 
 namespace RegistrationService.Domain
 {
@@ -7,7 +7,7 @@ namespace RegistrationService.Domain
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<SigningQueue>().As<ISigningQueue>().SingleInstance();
+            builder.RegisterType<LicenseSigningManager>().As<ILicenseSigningManager>().SingleInstance();
         }
     }
 }

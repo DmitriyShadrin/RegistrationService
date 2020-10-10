@@ -1,0 +1,33 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "RegistrationService.Api.Services";
+
+package RegistrationService;
+
+service SignLicense {
+  rpc ReadLicenses (ReadLicenseRequest) returns (stream ReadLicenseResponse) {}
+  rpc SendSignedLicense (SignedRequest) returns (SignedResponse) {}
+}
+
+enum SigningCode {
+  SIGNING_CODE_NONE = 0;
+  SIGNING_CODE_INVALID = 1;
+  SIGNING_CODE_ERROR = 2;
+  SIGNING_CODE_OK = 3;
+}
+
+message ReadLicenseRequest {}
+
+message ReadLicenseResponse {
+  string LicenseKey = 1;
+  string CorrelationId = 2;
+}
+
+message SignedRequest {
+  string CorrelationId = 1;
+  SigningCode Code = 2;
+}
+
+message SignedResponse {
+  bool State = 1;
+}
