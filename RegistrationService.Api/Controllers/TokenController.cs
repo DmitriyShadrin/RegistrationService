@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace RegistrationService.Api.Controllers
 {
-    // Simple test token provider.
+    // Simple test token provider. Use here real token provider. Or client certificate validation.
     [Route("api/v1/[controller]")]
     [ApiController]
     public class TokenController : ControllerBase

@@ -6,8 +6,8 @@ namespace RegistrationService.Domain.LicenseSigning
 {
     public interface ILicenseSigningManager
     {
-        IAsyncEnumerable<SigningProcess> ConsumeAllAsync(CancellationToken cancellationToken);
-        Task<SigningProcess> StartAsync(string licenseKey);
+        IAsyncEnumerable<SigningProcess> ConsumeAllAsync(CancellationToken cancellationToken = default);
+        Task<SigningProcess> StartAsync(string licenseKey, CancellationToken cancellationToken = default);
         bool TryComplete(string correlationId, string code);
         bool TryFail(string correlationId, string code);
     }

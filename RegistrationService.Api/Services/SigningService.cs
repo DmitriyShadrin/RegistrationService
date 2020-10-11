@@ -20,6 +20,9 @@ namespace RegistrationService.Api.Services
 
         public override async Task ReadLicense(ReadLicenseRequest request, IServerStreamWriter<ReadLicenseResponse> responseStream, ServerCallContext context)
         {
+            // TODO: Use any middleware for better observability e.g. Jagger or just logging middleware for all http requests. 
+            _logger.LogTrace("Read license started.");
+
             await foreach (var item in _licenseSigningManager.ConsumeAllAsync(context.CancellationToken))
             {
                 if (context.CancellationToken.IsCancellationRequested)
@@ -27,12 +30,20 @@ namespace RegistrationService.Api.Services
                     return;
                 }
 
+                _logger.LogTrace($"Read license item {item.CorrelationId}, {item.LicenseKey}.");
+
                 await responseStream.WriteAsync(new ReadLicenseResponse { LicenseKey = item.LicenseKey, CorrelationId = item.CorrelationId });
             }
+
+            _logger.LogTrace("Read license finished.");
         }
 
         public override Task<SignedResponse> SendSignedLicense(SignedRequest request, ServerCallContext context)
         {
+            // TODO: Use any middleware for better observability e.g. Jagger or just logging middleware for all http requests. 
+            _logger.LogTrace("Send signed license received.");
+            _logger.LogDebug($"Signed license response: {request.CorrelationId} {request.Code}.");
+
             var code = Convert(request.Code);
 
             bool state;
@@ -44,6 +55,8 @@ namespace RegistrationService.Api.Services
             {
                 state = _licenseSigningManager.TryFail(request.CorrelationId, code);
             }
+
+            _logger.LogTrace("Send signed license handled.");
 
             return Task.FromResult(new SignedResponse { State = state });
         }
